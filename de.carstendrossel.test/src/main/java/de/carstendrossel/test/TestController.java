@@ -41,9 +41,8 @@ public class TestController {
 	}
 
 	@RequestMapping(value = "/upper-form", method = RequestMethod.POST)
-	public String processSubmit(@Valid UpperFormBean upperFormBean, Model model) {
+	public void processSubmit(@Valid UpperFormBean upperFormBean, Model model) {
 		upperFormBean.setUpperText(upperCaser.toUpperCase(upperFormBean
 				.getText()));
-		return null;
 	}
 }
