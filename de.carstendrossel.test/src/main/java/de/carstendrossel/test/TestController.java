@@ -3,6 +3,7 @@ package de.carstendrossel.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,11 @@ public class TestController {
 
 	@Autowired
 	UpperCaser upperCaser;
+
+	@ModelAttribute("nameBean")
+	public NameBean createNamesBean() {
+		return new NameBean();
+	}
 
 	@RequestMapping(value = "/")
 	public String home() {
@@ -29,4 +35,16 @@ public class TestController {
 		model.addAttribute("output", output);
 		return "upper";
 	}
+
+	@RequestMapping(value = "/names", method = RequestMethod.GET)
+	public void names(Model model) {
+		model.addAttribute("names", NameDB.getNames());
+	}
+
+	@RequestMapping(value = "/names", method = RequestMethod.POST)
+	public String processSubmit(NameBean nameBean, Model model) {
+		NameDB.addName(nameBean.getNewName());
+		return "redirect:/names";
+	}
+
 }
